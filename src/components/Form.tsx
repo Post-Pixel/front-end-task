@@ -2,10 +2,15 @@ import React from "react";
 import "./Form.css";
 
 export class Form extends React.Component {
-  state = {
-    firstName: "",
-    lastName: ""
-  };
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      firstName: "",
+      lastName: ""
+    };
+
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
   onSubmit() {
     console.log(this.state);
