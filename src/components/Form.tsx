@@ -1,47 +1,61 @@
-import React from "react";
+import React, { useState, ChangeEvent } from 'react';
 import "./Form.css";
 
-export class Form extends React.Component {
-  state = {
-    firstName: "",
-    lastName: ""
+export type Name = {
+  firstName: string;
+  lastName: string;
+};
+
+type FormProps = {
+  formTitle: string;
+  initialName: Name;
+  updateName: (newName: Name) => void;
+};
+
+function Form(props: FormProps) {
+  const [name, setName] = useState (props.initialName);
+
+  const updateFirstName = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(Object.assign(name, { firstName: event.target.value }));
   };
 
-  onSubmit() {
-    console.log(this.state);
-  }
+  const updateLastName = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(Object.assign(name, { lastName: event.target.value }));
+  };
 
-  render() {
-    var title = "New Form";
-    return (
-      <div>
-        <div>{title}</div>
-        <form className="form clearfix">
-          <input
-            placeholder="First name"
-            name="firstName"
-            className="form-control form-input"
-            onChange={evt => {
-              this.setState({ firstName: evt.target.value });
-            }}
-          />
-          <input
-            placeholder="Last name"
-            name="lastName"
-            className="form-control form-input"
-            onChange={evt => {
-              this.setState({ lastName: evt.target.value });
-            }}
-          />
-        </form>
-        <button
-          type="button"
-          className="btn btn-primary form-btn"
-          onClick={this.onSubmit}
-        >
-          Save
-        </button>
-      </div>
-    );
-  }
+  const submitName = () => {
+    props.updateName(name);
+  };
+
+  return (
+    <div>
+      <div>{props.formTitle}</div>
+
+      <form className="clearfix form">
+        <input
+          placeholder="First name"
+          name="firstName"
+          className="form-control form-input"
+          onChange={ updateFirstName }
+        />
+
+        <input
+          placeholder="Last name"
+          name="lastName"
+          className="form-control form-input"
+          onChange={ updateLastName }
+        />
+      </form>
+
+      <button
+        type="button"
+        className="btn btn-primary form-btn"
+        onClick={ submitName }
+      >
+        Save
+      </button>
+    </div>
+  );
 }
+
+export default Form;
